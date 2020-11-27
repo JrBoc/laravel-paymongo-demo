@@ -17,9 +17,18 @@ class CreatePaymentsTable extends Migration
         Schema::create('app_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
+            $table->decimal('amount',10, 2);
+            $table->string('type');
+            $table->string('transaction_id')->unique();
             $table->json('payload');
+            $table->string('src_id')->unique()->nullable();
+            $table->string('pi_id')->unique()->nullable();
             $table->string('pay_id')->unique()->nullable();
-            $table->json('callback_response');
+            $table->json('initial_response');
+            $table->json('source_response');
+            $table->json('intent_payment_response');
+            $table->json('payment_response');
+            $table->json('re_query_response');
             $table->integer('status')->default(0);
             $table->timestamps();
         });
