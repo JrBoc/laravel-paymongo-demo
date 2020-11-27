@@ -8,8 +8,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('home', [
-            'payments' => current_user()->payments()->latest()->paginate(10),
-        ]);
+        return redirect()->route('ewallet-payments.index');
     }
 }

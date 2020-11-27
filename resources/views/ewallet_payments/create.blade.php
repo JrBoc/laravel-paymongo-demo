@@ -6,10 +6,10 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    Create Payment Request to Paymongo
+                    Create EWallet Payment Request
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('payments.store') }}" id="frm_payment" method="POST">
+                    <form action="{{ route('ewallet-payments.store') }}" id="frm_payment" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="payment_type">Payment Type: <span class="text-danger">*</span></label>

@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
+use App\Models\EWalletPayment;
 use Illuminate\Http\Request;
 use Luigel\Paymongo\Facades\Paymongo;
 
-class PaymentController extends Controller
+class EWalletPaymentController extends Controller
 {
+    public function index()
+    {
+        return view('ewallet_payments.index', [
+            'payments' => current_user()->eWalletPayments()->latest()->paginate(10),
+        ]);
+    }
+
     public function create()
     {
-        return view('payments.create');
+        return view('ewallet_payments.create');
     }
 
     public function store(Request $request)
@@ -20,7 +27,7 @@ class PaymentController extends Controller
             'amount' => 'required|numeric|min:100',
         ]);
 
-        $payment = Payment::create([
+        $payment = EWalletPayment::create([
             'user_id' => auth()->user()->id,
             'status' => 'initial',
             'amount' => $request->amount,
@@ -29,11 +36,11 @@ class PaymentController extends Controller
 
         $payload = [
             'type' => $request->payment_type,
-            'amount' => (int) $request->amount,
+            'amount' => $request->amount,
             'currency' => 'PHP',
             'redirect' => [
-                'success' => route('payments_callback.success', ['id' => $payment->id]),
-                'failed' =>  route('payments_callback.failed', ['id' => $payment->id]),
+                'success' => route('ewallet_payments_callback.success', ['id' => $payment->id]),
+                'failed' =>  route('ewallet_payments_callback.failed', ['id' => $payment->id]),
             ]
         ];
 
@@ -52,30 +59,30 @@ class PaymentController extends Controller
         return redirect()->to($source->redirect['checkout_url']);
     }
 
-    public function update(Payment $payment)
+    public function update(EWalletPayment $eWalletPayment)
     {
-        if (in_array($payment->type, ['gcash', 'grab_pay'])) {
+        if (in_array($eWalletPayment->type, ['gcash', 'grab_pay'])) {
             try {
-                $source = Paymongo::source()->find($payment->src_id)->getAttributes();
+                $source = Paymongo::source()->find($eWalletPayment->src_id)->getAttributes();
 
-                if($payment->status == $source['status']) {
-                    session()->flash('error', 'No changes was made to transaction #' . $payment->id .'. No changes was found.');
+                if($eWalletPayment->status == $source['status']) {
+                    session()->flash('error', 'No changes was made to transaction #' . $eWalletPayment->transaction_id .'. No changes was found.');
 
                     return redirect()->route('home');
                 }
 
-                $payment->update([
+                $eWalletPayment->update([
                     'status' => $source['status'],
                     're_query_response' => $source,
                 ]);
 
-                session()->flash('success', 'Payment for transaction #' . $payment->id . ' was updated to <b>' . $payment->fresh()->getStatus()['text'] . '</b>');
+                session()->flash('success', 'Payment for transaction #' . $eWalletPayment->transaction_id . ' was updated to <b>' . $eWalletPayment->fresh()->getStatus()['text'] . '</b>');
             } catch (\Luigel\Paymongo\Exceptions\MethodNotFoundException $e) {
-                $payment->update([
+                $eWalletPayment->update([
                     'status' => 'failed',
                 ]);
 
-                session()->flash('error', 'Payment for transaction #' . $payment->id . ' was not found in Paymongo');
+                session()->flash('error', 'Payment for transaction #' . $eWalletPayment->transaction_id . ' was not found in Paymongo');
             }
         }
 

@@ -21,9 +21,9 @@
             @endif
             <div class="card mt-2">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    EWallet Payments
+                    Card Payments
                     <span class="float-right">
-                        <a href="{{ route('ewallet-payments.create') }}" class="btn btn-primary">Create Payment</a>
+                        <a href="{{ route('card-payments.create') }}" class="btn btn-primary">Create Payment</a>
                     </span>
                 </div>
                 <div class="card-body pl-0 pr-0">

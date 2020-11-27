@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
+use App\Models\EWalletPayment;
 use Illuminate\Http\Request;
 use Luigel\Paymongo\Facades\Paymongo;
 
-class PaymentCallbackController extends Controller
+class EWalletPaymentCallbackController extends Controller
 {
     public function success(Request $request)
     {
-        $pay = Payment::with('user')->findOrFail($request->id);
+        $eWalletPayment = EWalletPayment::with('user')->findOrFail($request->id);
 
-        $source = Paymongo::source()->find($pay->src_id)->getAttributes();
+        $source = Paymongo::source()->find($eWalletPayment->src_id)->getAttributes();
 
-        if ($pay->status == 'pending') {
-            $pay->update([
+        if ($eWalletPayment->status == 'pending') {
+            $eWalletPayment->update([
                 'source_response' => $source,
                 'status' => $source['status']
             ]);
@@ -26,9 +26,9 @@ class PaymentCallbackController extends Controller
                 // Create Payment from Source
                 $payment = Paymongo::payment()->create([
                     'amount' => $source['amount'] / 100,
-                    'description' => 'Gcash Payment for ID: ' . $pay->id,
+                    'description' => (($eWalletPayment->type == 'gcash') ? 'GCash' : 'GrabPay') . ' Payment for Transaction ID: ' . $eWalletPayment->transaction_id,
                     'currency' => 'PHP',
-                    'statement_descriptor' => $pay->user->name,
+                    'statement_descriptor' => $eWalletPayment->user->name,
                     'source' => [
                         'id' => $source['id'],
                         'type' => 'source',
@@ -37,21 +37,21 @@ class PaymentCallbackController extends Controller
 
                 $payment = $payment->getAttributes();
 
-                $pay->update([
+                $eWalletPayment->update([
                     'payment_response' => $payment,
                     'status' => $payment['status'],
                     'pay_id' => $payment['id'],
                 ]);
                 break;
             case 'paid':
-                if(is_null($pay->pay_id)) {
+                if(is_null($eWalletPayment->pay_id)) {
                     $payments = Paymongo::payment()->all();
 
                     foreach($payments as $payment) {
                         $payment = $payment->getAttributes();
 
                         if($payment['source']['id']) {{
-                            $pay->update([
+                            $eWalletPayment->update([
                                 'payment_response' => $payment,
                                 'pay_id' => $payment['id'],
                                 'status' => $payment['status']
@@ -62,9 +62,9 @@ class PaymentCallbackController extends Controller
                     }
                 }
 
-                $payments = Paymongo::payment()->find($pay->pay_id)->getAttributes();
+                $payments = Paymongo::payment()->find($eWalletPayment->pay_id)->getAttributes();
 
-                $pay->update([
+                $eWalletPayment->update([
                     'payment_response' => $payment,
                     'pay_id' => $payment['id'],
                     'status' => $payment['status']
@@ -73,14 +73,14 @@ class PaymentCallbackController extends Controller
                 break;
         }
 
-        session()->flash('success', 'Payment for transaction #' . $pay->id . ' was updated to <b>' . $pay->fresh()->getStatus()['text'] . '</b>');
+        session()->flash('success', 'Payment for transaction #' . $eWalletPayment->id . ' was updated to <b>' . $eWalletPayment->fresh()->getStatus()['text'] . '</b>');
 
         return redirect()->route('home');
     }
 
     public function failed(Request $request)
     {
-        $pay = Payment::with('user')->findOrFail($request->id);
+        $pay = EWalletPayment::with('user')->findOrFail($request->id);
 
         $source = Paymongo::source()->find($pay->src_id)->getAttributes();
 

@@ -11,8 +11,9 @@ Auth::routes();
 
 Route::middleware('auth')->group(function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::resource('/payments', App\Http\Controllers\PaymentController::class);
+    Route::resource('/ewallet-payments', App\Http\Controllers\EWalletPaymentController::class);
+    Route::resource('/card-payments', App\Http\Controllers\CardPaymentController::class);
 });
 
-Route::get('/payments-callback/success', [App\Http\Controllers\PaymentCallbackController::class, 'success'])->name('payments_callback.success');
-Route::get('/payments-callback/failed', [App\Http\Controllers\PaymentCallbackController::class, 'failed'])->name('payments_callback.failed');
+Route::get('/ewallet-payments-callback/success', [App\Http\Controllers\EWalletPaymentCallbackController::class, 'success'])->name('ewallet_payments_callback.success');
+Route::get('/ewallet-payments-callback/failed', [App\Http\Controllers\EWalletPaymentCallbackController::class, 'failed'])->name('ewallet_payments_callback.failed');
