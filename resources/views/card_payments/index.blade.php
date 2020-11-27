@@ -31,11 +31,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Type</th>
                                 <th>Transaction ID</th>
                                 <th>Amount</th>
-                                <th>Src ID</th>
-                                <th>Pay ID</th>
+                                <th>Payment Intent ID</th>
+                                <th>Payment Method ID</th>
                                 <th style="width: 1%">Status</th>
                                 <th>Created At</th>
                                 <th style="width: 1%"></th>
@@ -45,36 +44,20 @@
                             @forelse($payments as $payment)
                             <tr>
                                 <td class="text-right">{{ $payment->id }}</td>
-                                <td>{{ $payment->readable_type }}</td>
                                 <td>{{ $payment->transaction_id }}</td>
                                 <td>PHP <span class="float-right">{{ number_format($payment->amount, 2) }}</span></td>
+                                <td> {{ mb_strimwidth($payment->pi_id, 0, 15, '...') }}</td>
+                                <td> {{ mb_strimwidth($payment->pm_id, 0, 15, '...') }}</td>
                                 <td>
-                                    @if(in_array($payment->getStatus()['text'], ['Chargeable', 'Pending']))
-                                    <a href="{{ $payment->initial_response['redirect']['checkout_url'] }}">{{ $payment->src_id }}</a>
-                                    @else
-                                    {{ mb_strimwidth($payment->src_id, 0, 15, '...') }}
-                                    @endif
-                                </td>
-                                <td> {{ mb_strimwidth($payment->pay_id, 0, 15, '...') }}</td>
-                                <td>
-                                    <label style="font-size: 12px" class="p-2 badge badge-{{ $payment->getStatus()['color'] }}">{{ $payment->getStatus()['text'] }}</label>
+                                    {{ $payment->status }}
                                 </td>
                                 <td>
                                     {{ $payment->readable_created_at }}
                                 </td>
-                                <td>
-                                    @if(in_array($payment->getStatus()['text'], ['Chargeable', 'Pending']))
-                                    <form action="{{ route('ewallet-payments.update', ['payment' => $payment]) }}" method="POST">
-                                        @csrf
-                                        @method('put')
-                                        <button class="btn btn-outline-primary">Re-Query</button>
-                                    </form>
-                                    @endif
-                                </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="10" class="text-center">No Payments Found</td>
+                                <td colspan="8" class="text-center">No Payments Found</td>
                             </tr>
                             @endforelse
                         </tbody>

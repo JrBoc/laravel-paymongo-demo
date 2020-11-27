@@ -79,4 +79,9 @@ class CardPayment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getReadableCreatedAtAttribute()
+    {
+        return $this->created_at->addHours(8)->format('D, M j, Y, g:i A');
+    }
 }
