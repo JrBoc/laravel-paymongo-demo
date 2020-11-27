@@ -10,6 +10,7 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
+    var card = require("card");
     require('bootstrap');
 } catch (e) {}
 

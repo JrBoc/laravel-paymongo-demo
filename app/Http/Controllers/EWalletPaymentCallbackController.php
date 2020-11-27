@@ -75,7 +75,7 @@ class EWalletPaymentCallbackController extends Controller
 
         session()->flash('success', 'Payment for transaction #' . $eWalletPayment->id . ' was updated to <b>' . $eWalletPayment->fresh()->getStatus()['text'] . '</b>');
 
-        return redirect()->route('home');
+        return redirect()->route('ewallet-payments.index');
     }
 
     public function failed(Request $request)
@@ -93,6 +93,6 @@ class EWalletPaymentCallbackController extends Controller
 
         session()->flash('success', 'Payment for transaction #' . $pay->id . ' was updated to <b>' . $pay->fresh()->getStatus()['text'] . '</b>');
 
-        return redirect()->route('home');
+        return redirect()->route('ewallet-payments.index');
     }
 }

@@ -86,6 +86,6 @@ class EWalletPaymentController extends Controller
             }
         }
 
-        return redirect()->route('home');
+        return redirect()->route('ewallet-payments.index');
     }
 }

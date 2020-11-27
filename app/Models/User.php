@@ -35,6 +35,8 @@ use Illuminate\Notifications\Notifiable;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EWalletPayment[] $eWalletPayments
  * @property-read int|null $e_wallet_payments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CardPayment[] $cardPayments
+ * @property-read int|null $card_payments_count
  */
 class User extends Authenticatable
 {

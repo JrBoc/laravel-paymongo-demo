@@ -11,7 +11,7 @@ Auth::routes();
 
 Route::middleware('auth')->group(function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::resource('/ewallet-payments', App\Http\Controllers\EWalletPaymentController::class);
+    Route::resource('/ewallet-payments', App\Http\Controllers\EWalletPaymentController::class)->except('show', 'update', 'destroy');
     Route::resource('/card-payments', App\Http\Controllers\CardPaymentController::class);
 });
 
