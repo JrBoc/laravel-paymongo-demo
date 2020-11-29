@@ -23,7 +23,6 @@ class CreateCardPaymentsTable extends Migration
             $table->string('pm_id')->unique()->nullable();
             $table->string('pi_id')->unique()->nullable();
             $table->boolean('payment_attached')->default(false);
-            $table->json('initial_response')->nullable();
             $table->json('payment_method_response')->nullable();
             $table->json('payment_intent_response')->nullable();
             $table->json('re_query_response')->nullable();
