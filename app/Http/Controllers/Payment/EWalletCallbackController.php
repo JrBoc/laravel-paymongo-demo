@@ -64,14 +64,14 @@ class EWalletCallbackController extends Controller
 
         session()->flash('success', 'Payment for transaction ID ' . $eWalletPayment->id . ' was successful');
 
-        return redirect()->route('ewallet.index');
+        return redirect()->route('e-wallet-payment.index');
     }
 
     public function failed(EWalletPayment $eWalletPayment)
     {
         $source = Paymongo::source()->find($eWalletPayment->src_id);
 
-        if($eWalletPayment->status == 'pending') {
+        if ($eWalletPayment->status == 'pending') {
             $eWalletPayment->update([
                 'source_callback_response' => $source->getAttributes(),
                 'status' => 'fail',
@@ -80,6 +80,6 @@ class EWalletCallbackController extends Controller
 
         session()->flash('success', 'Payment for transaction ID ' . $eWalletPayment->id . ' failed');
 
-        return redirect()->route('ewallet.index');
+        return redirect()->route('e-wallet-payment.index');
     }
 }

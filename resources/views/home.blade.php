@@ -23,7 +23,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     EWallet Payments
                     <span class="float-right">
-                        <a href="{{ route('ewallet-payments.create') }}" class="btn btn-primary">Create Payment</a>
+                        <a href="{{ route('e-wallet-payments.create') }}" class="btn btn-primary">Create Payment</a>
                     </span>
                 </div>
                 <div class="card-body pl-0 pr-0">
@@ -64,7 +64,7 @@
                                 </td>
                                 <td>
                                     @if(in_array($payment->getStatus()['text'], ['Chargeable', 'Pending']))
-                                    <form action="{{ route('ewallet-payments.update', ['payment' => $payment]) }}" method="POST">
+                                    <form action="{{ route('e-wallet-payments.update', ['payment' => $payment]) }}" method="POST">
                                         @csrf
                                         @method('put')
                                         <button class="btn btn-outline-primary">Re-Query</button>

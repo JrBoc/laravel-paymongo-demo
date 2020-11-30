@@ -27,7 +27,7 @@ class CreateEWalletPaymentsTable extends Migration
             $table->json('source_callback_response')->nullable();
             $table->json('payment_response')->nullable();
             $table->json('re_query_response')->nullable();
-            $table->string('status')->default('initialized');
+            $table->string('status')->default('initial');
             $table->timestamps();
         });
     }

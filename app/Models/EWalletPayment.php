@@ -14,6 +14,8 @@ class EWalletPayment extends Model
 
     protected $table = 'app_ewallet_payments';
 
+    protected $guarded = [];
+
     protected $appends = [
         'readable_created_at',
         'readable_type',
@@ -28,8 +30,6 @@ class EWalletPayment extends Model
         'payment_response' => 'array',
         're_query_response' => 'array',
     ];
-
-    protected $guarded = [];
 
     public static function boot()
     {
@@ -103,7 +103,11 @@ class EWalletPayment extends Model
 
     public function getReadableCreatedAtAttribute()
     {
-        return $this->created_at->addHours(8)->format('D, M j, Y, g:i A');
+        if($this->created_at) {
+            return $this->created_at->toPhFormat();
+        }
+
+        return $this->created_at;
     }
 
     public function getReadableAmountAttribute()
@@ -114,7 +118,7 @@ class EWalletPayment extends Model
     public function isReQueryable(): bool
     {
         return in_array($this->readable_status['status'], [
-            'chargeable',
+            'chargeable', 'pending',
         ]);
     }
 

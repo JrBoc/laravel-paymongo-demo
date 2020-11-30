@@ -119,7 +119,10 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
     'phone' => 'The :attribute field contains an invalid number.',
-
+    'card_number.validation.credit_card.card_invalid' => 'The :attribute field contains an invalid card.',
+    'validation.credit_card.card_expiration_year_invalid' => 'The :attribute field contains an invalid expiration year.',
+    'validation.credit_card.card_expiration_month_invalid' => 'The :attribute field contains an invalid expiration month.',
+    'validation.credit_card.card_cvc_invalid' => 'The :attribute field contains an invalid cvc.',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

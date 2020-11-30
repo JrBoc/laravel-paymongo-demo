@@ -9,7 +9,7 @@
                     Create EWallet Payment Request
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('ewallet-payments.store') }}" id="frm_payment" method="POST">
+                    <form action="{{ route('e-wallet-payments.store') }}" id="frm_payment" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="payment_type">Payment Type: <span class="text-danger">*</span></label>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class CardPayment extends Model
 {
@@ -16,8 +17,16 @@ class CardPayment extends Model
 
     protected $casts = [
         'payload' => 'array',
+        'payment_method_response' => 'array',
         'payment_intent_response' => 'array',
         'payment_attach_response' => 'array',
+    ];
+
+    protected $appends = [
+        'readable_created_at',
+        'readable_type',
+        'readable_status',
+        'readable_amount',
     ];
 
     public static function boot()
@@ -41,8 +50,75 @@ class CardPayment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getReadableStatusAttribute()
+    {
+        $statuses = [
+            'awaiting_payment_method' => [
+                'color' => 'secondary',
+                'text' => 'Awaiting Payment Method',
+                'status' => $this->status,
+            ],
+            'chargeable' => [
+                'color' => 'info',
+                'text' => 'Chargeable',
+                'status' => $this->status,
+            ],
+            'succeeded' => [
+                'color' => 'success',
+                'text' => 'Success',
+                'status' => $this->status,
+            ],
+            'fail' => [
+                'color' => 'danger',
+                'text' => 'Failed',
+                'status' => $this->status,
+            ],
+            'expired' => [
+                'color' => 'dark',
+                'text' => 'Expired',
+                'status' => 'expired',
+            ],
+            'awaiting_next_action' => [
+                'color' => 'info',
+                'text' => 'Awaiting Next Action',
+                'status' => $this->status,
+            ]
+        ];
+
+        if (in_array($this->status, ['chargeable', 'pending']) && now()->isAfter($this->created_at->addHour())) {
+            return collect($statuses['expired']);
+        }
+
+        return collect($statuses[$this->status] ?? [
+            'color' => 'warning',
+            'text' => Str::title($this->status),
+            'status' => $this->status,
+        ]);
+    }
+
     public function getReadableCreatedAtAttribute()
     {
-        return $this->created_at->addHours(8)->format('D, M j, Y, g:i A');
+        if($this->created_at) {
+            return $this->created_at->toPhFormat();
+        }
+
+        return $this->created_at;
+    }
+
+    public function getReadableAmountAttribute()
+    {
+        return number_format($this->amount, 2);
+    }
+
+    public function isReQueryable(): bool
+    {
+        return in_array($this->readable_status['status'], [
+            'chargeable', 'pending',
+        ]);
+    }
+
+    public function isPayable(): bool
+    {
+        return $this->status == 'pending' && !now()->isAfter($this->created_at->addHour());
     }
 }

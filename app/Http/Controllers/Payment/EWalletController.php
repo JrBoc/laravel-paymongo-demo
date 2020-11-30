@@ -38,8 +38,8 @@ class EWalletController extends Controller
             'amount' => $data['amount'],
             'currency' => 'PHP',
             'redirect' => [
-                'success' => route('ewallet.callback_success', $eWalletPayment),
-                'failed' =>  route('ewallet.callback_failed', $eWalletPayment),
+                'success' => route('e-wallet-payment.callback_success', $eWalletPayment),
+                'failed' =>  route('e-wallet-payment.callback_failed', $eWalletPayment),
             ]
         ];
 
@@ -60,12 +60,19 @@ class EWalletController extends Controller
 
     public function update(EWalletPayment $eWalletPayment)
     {
-        $source = Paymongo::source()->find($eWalletPayment->src_id);
+        try {
+            $source = Paymongo::source()->find($eWalletPayment->src_id);
+        } catch (\Luigel\Paymongo\Exceptions\NotFoundException $e) {
+            $eWalletPayment->update([
+                'status' => 'not_found',
+            ]);
 
-        if($eWalletPayment->status == $source->status) {
-            session()->flash('error', 'No changes was made to transaction #' . $eWalletPayment->transaction_id .'. No changes was found.');
+            return $this->flashAndRedirect('Payment for transaction ID ' . $eWalletPayment->transaction_id . ' was not found. No Record was found in PAYMONGO Services', 'error');
+        }
 
-            return redirect()->route('ewallet.index');
+        if ($eWalletPayment->status == $source->status) {
+            session()->flash('error', 'No changes was made to transaction #' . $eWalletPayment->transaction_id . '. No changes was found.');
+            return redirect()->route('e-wallet-payment.index');
         }
 
         $eWalletPayment->update([
@@ -73,8 +80,13 @@ class EWalletController extends Controller
             're_query_response' => $source,
         ]);
 
-        session()->flash('success', 'Payment for transaction ID ' . $eWalletPayment->id . ' ' . ($eWalletPayment->status == 'paid') ? 'was successful' : 'failed');
+        return $this->flashAndRedirect('Payment for transaction ID ' . $eWalletPayment->id . ' ' . (($eWalletPayment->status == 'paid') ? 'was successful' : 'failed'));
+    }
 
-        return redirect()->route('ewallet.index');
+
+    private function flashAndRedirect($message = '', $type = 'success')
+    {
+        session()->flash($type, $message);
+        return redirect()->route('e-wallet-payment.index');
     }
 }

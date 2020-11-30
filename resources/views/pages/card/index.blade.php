@@ -21,9 +21,9 @@
             @endif
             <div class="card mt-2">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    EWallet Payments
+                    Card Payments
                     <span class="float-right">
-                        <a href="{{ route('e-wallet-payment.create') }}" class="btn btn-primary">Create Payment</a>
+                        <a href="{{ route('card-payment.create') }}" class="btn btn-primary">Create Payment</a>
                     </span>
                 </div>
                 <div class="card-body pl-0 pr-0">
@@ -31,7 +31,6 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Type</th>
                                 <th>Transaction ID</th>
                                 <th>Amount</th>
                                 <th style="width: 1%">Status</th>
@@ -46,9 +45,6 @@
                                     {{ $payment->id }}
                                 </td>
                                 <td>
-                                    {{ $payment->readable_type }}
-                                </td>
-                                <td>
                                     {{ $payment->transaction_id }}
                                 </td>
                                 <td class="text-right">
@@ -58,7 +54,7 @@
                                     <label style="font-size: 12px" class="p-2 badge badge-{{ $payment->readable_status['color'] }}">{{ $payment->readable_status['text'] }}</label>
                                 </td>
                                 <td>
-                                    {{ $payment->created_at->toPhFormat() }}
+                                    {{ $payment->readable_created_at }}
                                 </td>
                                 <td class="">
                                     <div class="d-flex justify-content-between align-items-center text-center">

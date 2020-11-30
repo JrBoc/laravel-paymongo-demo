@@ -22,8 +22,7 @@ namespace App\Models{
  * @property string|null $pm_id
  * @property string|null $pi_id
  * @property int $payment_attached
- * @property mixed|null $initial_response
- * @property array|null $payment_attach_response
+ * @property array|null $payment_method_response
  * @property array|null $payment_intent_response
  * @property mixed|null $re_query_response
  * @property string $status
@@ -37,11 +36,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CardPayment whereInitialResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePayload($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePaymentAttachResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePaymentAttached($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePaymentIntentResponse($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePaymentMethodResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePiId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment wherePmId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CardPayment whereReQueryResponse($value)
@@ -59,19 +57,20 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
- * @property string $amount
  * @property string $type
+ * @property string $amount
  * @property string $transaction_id
  * @property array|null $payload
  * @property string|null $src_id
  * @property string|null $pay_id
- * @property array|null $initial_response
  * @property array|null $source_response
+ * @property mixed|null $source_callback_response
  * @property array|null $payment_response
  * @property array|null $re_query_response
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $readable_amount
  * @property-read mixed $readable_created_at
  * @property-read mixed $readable_status
  * @property-read mixed $readable_type
@@ -82,11 +81,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereInitialResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment wherePayId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment wherePayload($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment wherePaymentResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereReQueryResponse($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereSourceCallbackResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereSourceResponse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereSrcId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EWalletPayment whereStatus($value)

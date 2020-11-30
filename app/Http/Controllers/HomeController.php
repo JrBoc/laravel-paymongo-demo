@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return redirect()->route('ewallet-payments.index');
+        return redirect()->route('e-wallet-payments.index');
     }
 }
