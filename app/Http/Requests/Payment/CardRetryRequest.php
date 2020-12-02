@@ -3,13 +3,11 @@
 namespace App\Http\Requests\Payment;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
-use LVR\CreditCard\CardCvc;
 use LVR\CreditCard\CardExpirationMonth;
 use LVR\CreditCard\CardExpirationYear;
 use LVR\CreditCard\CardNumber;
 
-class CardStoreRequest extends FormRequest
+class CardRetryRequest extends FormRequest
 {
     public function authorize()
     {
@@ -19,7 +17,6 @@ class CardStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|numeric|min:100',
             'card_number' => [
                 'required',
                 'string',

@@ -68,7 +68,7 @@
                                         </form>
                                         @endif
                                         @if($payment->isPayable())
-                                        <a href="{{ $payment->source_response['redirect']['checkout_url'] }}" class="btn btn-outline-primary" data-toggle="tooltip" title="Pay">
+                                        <a href="{{ route('card-payment.retry', $payment) }}" class="btn btn-outline-primary" data-toggle="tooltip" title="ReTry">
                                             <i class="fas fa-link"></i>
                                         </a>
                                         @endif

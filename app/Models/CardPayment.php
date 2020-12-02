@@ -24,7 +24,6 @@ class CardPayment extends Model
 
     protected $appends = [
         'readable_created_at',
-        'readable_type',
         'readable_status',
         'readable_amount',
     ];
@@ -85,7 +84,7 @@ class CardPayment extends Model
             ]
         ];
 
-        if (in_array($this->status, ['chargeable', 'pending']) && now()->isAfter($this->created_at->addHour())) {
+        if (in_array($this->status, ['awaiting_payment_method', 'pending']) && now()->isAfter($this->created_at->addHour())) {
             return collect($statuses['expired']);
         }
 
@@ -119,6 +118,6 @@ class CardPayment extends Model
 
     public function isPayable(): bool
     {
-        return $this->status == 'pending' && !now()->isAfter($this->created_at->addHour());
+        return $this->status == 'awaiting_payment_method' && !now()->isAfter($this->created_at->addHour());
     }
 }

@@ -33,11 +33,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        {{-- <li class="nav-item">
-                            <a href="{{ route('card-payments.index') }}" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{ route('card-payment.index') }}" class="nav-link">
                                 Card Payments
                             </a>
-                        </li> --}}
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('e-wallet-payment.index') }}" class="nav-link">
                                 EWallet Payments

@@ -55,9 +55,6 @@
                         </div>
                         <button class="btn btn-primary" type="submit">SUBMIT</button>
                     </form>
-                    @php
-                        dump($errors, request()->all());
-                    @endphp
                 </div>
             </div>
         </div>

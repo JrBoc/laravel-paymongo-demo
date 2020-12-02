@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    Create Card Payment Request
+                    Retrying Card Payment
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
@@ -14,11 +14,11 @@
                         <hr>
                         <small> For demo purposes this form sends the Credit Card information to the backend.</small>
                     </div>
-                    <form id="frm_payment" action="{{ route('card-payments.store') }}" method="post">
+                    <form id="frm_payment" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="amount">Amount: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="amount">
+                            <input type="text" class="form-control" value="{{ $cardPayment->amount }}" disabled>
                         </div>
                         <div class="card-display mb-3">
 
