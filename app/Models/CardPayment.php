@@ -20,12 +20,14 @@ class CardPayment extends Model
         'payment_method_response' => 'array',
         'payment_intent_response' => 'array',
         'payment_attach_response' => 'array',
+        're_query_response' => 'array',
     ];
 
     protected $appends = [
         'readable_created_at',
         'readable_status',
         'readable_amount',
+        'last_payment_error',
     ];
 
     public static function boot()
@@ -95,6 +97,17 @@ class CardPayment extends Model
         ]);
     }
 
+    public function getLastPaymentErrorAttribute()
+    {
+        $errors = [];
+
+        if(!is_null($this->re_query_response)) {
+            $errors = $this->re_query_response['last_payment_error'];
+        }
+
+        return collect($errors);
+    }
+
     public function getReadableCreatedAtAttribute()
     {
         if($this->created_at) {
@@ -109,10 +122,10 @@ class CardPayment extends Model
         return number_format($this->amount, 2);
     }
 
-    public function isReQueryable(): bool
+    public function isAuthenticatable(): bool
     {
         return in_array($this->readable_status['status'], [
-            'chargeable', 'pending',
+            'awaiting_next_action'
         ]);
     }
 

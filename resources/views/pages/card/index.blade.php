@@ -58,14 +58,10 @@
                                 </td>
                                 <td class="">
                                     <div class="d-flex justify-content-between align-items-center text-center">
-                                        @if($payment->isReQueryable())
-                                        <form action="{{ route('e-wallet-payment.update', $payment) }}" method="POST">
-                                            @csrf
-                                            @method('put')
-                                            <button type="submit" class="btn btn-outline-primary" data-toggle="tooltip" title="Re-Query">
-                                                <i class="fas fa-redo"></i>
-                                            </button>
-                                        </form>
+                                        @if($payment->isAuthenticatable())
+                                        <a href="{{ route('card-payment.security_check', $payment) }}" class="btn btn-outline-primary" data-toggle="tooltip" title="Authenticate Card">
+                                            <i class="fa fa-credit-card"></i>
+                                        </a>
                                         @endif
                                         @if($payment->isPayable())
                                         <a href="{{ route('card-payment.retry', $payment) }}" class="btn btn-outline-primary" data-toggle="tooltip" title="ReTry">
