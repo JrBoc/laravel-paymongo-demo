@@ -13,8 +13,8 @@ A simple demo integration of [paymongo](https://paymongo.com/) API with Laravel.
 - GCash Payments :heavy_check_mark:
 - GrabPay Payments :heavy_check_mark:
 - Card Payments :heavy_check_mark:
-- Making Card Payments responses pretty
-- 
+- Making Card Payments responses pretty :heavy_check_mark:
+
 ### Thanks to:
 - [Rigel Kent Carbonel](https://github.com/luigel) for creating a wrapper for paymongo. ([Laravel Paymongo](https://github.com/luigel/laravel-paymongo))
 
