@@ -42,7 +42,9 @@ class CardRetryRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        [$month, $year] = explode(' / ', $this->get('expiry'));
+        $expiry_date = explode(' / ', $this->get('expiry'));
+
+        [$month, $year] = !count($expiry_date) ? $expiry_date : [null, null];
 
         $this->merge([
             'card_number' => str_replace(' ', '', $this->get('card_number')),
